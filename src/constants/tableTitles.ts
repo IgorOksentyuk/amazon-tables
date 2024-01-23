@@ -1,0 +1,1 @@
+export const accountTitles = ['accountId', 'email', 'authToken', 'creationDate']
