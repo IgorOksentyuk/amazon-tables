@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { Table } from 'react-bootstrap'
-import { FaSort } from "react-icons/fa"
-import { FaSortDown } from "react-icons/fa"
-import { FaSortUp } from "react-icons/fa"
+import { FaSort } from 'react-icons/fa'
+import { FaSortDown } from 'react-icons/fa'
+import { FaSortUp } from 'react-icons/fa'
 
 import { accountsData } from '../../data/accountsData'
 import { accountTitles } from '../../constants/tableTitles'
 import { Account } from '../../interfaces/accountInterface'
 import { AccountsForm } from './AccountsForm'
+import { AccountsPagination } from './AccountsPagination'
 
 const getVisibleAccounts = (
   accounts: Account[],
   searchQuery: string,
   sortType: string,
   isReversed: boolean,
+  currentPage: number,
 ) => {
   let visibleAccounts = [...accounts]
 
@@ -46,13 +48,21 @@ const getVisibleAccounts = (
     visibleAccounts.reverse()
   }
 
-  return visibleAccounts;
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+
+  visibleAccounts = visibleAccounts.slice(startIndex, endIndex)
+
+  return visibleAccounts
 }
+
+const ITEMS_PER_PAGE = 5
 
 export const AccountsTable = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortType, setSortType] = useState('')
   const [isReversed, setIsReversed] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const sortBy = (newSortType: string) => {
     const firstClick = newSortType !== sortType
@@ -86,7 +96,14 @@ export const AccountsTable = () => {
     searchQuery,
     sortType,
     isReversed,
+    currentPage,
   )
+
+  const totalPages = Math.ceil(accountsData.length / ITEMS_PER_PAGE)
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage)
+  }
 
   return (
     <>
@@ -130,6 +147,12 @@ export const AccountsTable = () => {
         </Table>
         : <p className="text-center">There are no accounts!</p>
       }
+
+      <AccountsPagination
+        pages={totalPages}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+      />
     </>
   )
 }
