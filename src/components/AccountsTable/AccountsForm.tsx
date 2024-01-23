@@ -1,22 +1,34 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { RxCross1 } from 'react-icons/rx'
+import debounce from 'lodash.debounce'
 
 type Props = {
-  query: string,
-  setQuery: (query: string) => void,
+  setSearchQuery: (searchQuery: string) => void,
 }
 
-export const AccountsForm: React.FC<Props> = ({ query, setQuery }) => {
+export const AccountsForm: React.FC<Props> = ({ setSearchQuery }) => {
+  const [query, setQuery] = useState('')
+
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const clearFilter = () => {
     setQuery('')
+    debouncedChange('')
 
     if (inputRef.current) {
       inputRef.current.focus()
     }
   }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    debouncedChange(value)
+    setQuery(value)
+  }
+
+  const debouncedChange = debounce((value: string) => setSearchQuery(value), 300)
 
   return (
     <Form className="flex gap-[20px] mb-[30px]">
@@ -29,7 +41,7 @@ export const AccountsForm: React.FC<Props> = ({ query, setQuery }) => {
           type="text"
           placeholder="Search by email..."
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={handleInputChange}
           ref={inputRef}
         />
 

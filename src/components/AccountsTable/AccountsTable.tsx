@@ -11,14 +11,14 @@ import { AccountsForm } from './AccountsForm'
 
 const getVisibleAccounts = (
   accounts: Account[],
-  query: string,
+  searchQuery: string,
   sortType: string,
   isReversed: boolean,
 ) => {
   let visibleAccounts = [...accounts]
 
-  if (query) {
-    const normalizedQuery = query.toLowerCase().trim()
+  if (searchQuery) {
+    const normalizedQuery = searchQuery.toLowerCase().trim()
 
     visibleAccounts = visibleAccounts.filter((account) =>
       account.email.toLowerCase().includes(normalizedQuery)
@@ -50,7 +50,7 @@ const getVisibleAccounts = (
 }
 
 export const AccountsTable = () => {
-  const [query, setQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const [sortType, setSortType] = useState('')
   const [isReversed, setIsReversed] = useState(false)
 
@@ -83,14 +83,14 @@ export const AccountsTable = () => {
 
   const visibleAccounts = getVisibleAccounts(
     accountsData,
-    query,
+    searchQuery,
     sortType,
     isReversed,
   )
 
   return (
     <>
-      <AccountsForm query={query} setQuery={setQuery} />
+      <AccountsForm setSearchQuery={setSearchQuery} />
 
       {visibleAccounts.length > 0
         ? <Table striped bordered hover>
