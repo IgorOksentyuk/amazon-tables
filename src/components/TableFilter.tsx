@@ -5,9 +5,10 @@ import debounce from 'lodash.debounce'
 
 type Props = {
   setSearchQuery: (searchQuery: string) => void,
+  inputPlaceholder: string,
 }
 
-export const AccountsForm: React.FC<Props> = ({ setSearchQuery }) => {
+export const TableFilter: React.FC<Props> = ({ setSearchQuery, inputPlaceholder }) => {
   const [query, setQuery] = useState('')
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -39,7 +40,7 @@ export const AccountsForm: React.FC<Props> = ({ setSearchQuery }) => {
         <Form.Control
           className="relative"
           type="text"
-          placeholder="Search by email..."
+          placeholder={`Search by ${inputPlaceholder}...`}
           value={query}
           onChange={handleInputChange}
           ref={inputRef}

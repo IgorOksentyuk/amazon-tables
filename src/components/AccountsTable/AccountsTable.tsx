@@ -7,8 +7,9 @@ import { FaSortUp } from 'react-icons/fa'
 import { accountsData } from '../../data/accountsData'
 import { accountTitles } from '../../constants/tableTitles'
 import { Account } from '../../interfaces/accountInterface'
-import { AccountsForm } from './AccountsForm'
+import { TableFilter } from '../TableFIlter'
 import { AccountsPagination } from './AccountsPagination'
+import { Link } from 'react-router-dom'
 
 const getVisibleAccounts = (
   accounts: Account[],
@@ -64,6 +65,8 @@ export const AccountsTable = () => {
   const [isReversed, setIsReversed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
+  const inputPlaceholder = 'email'
+
   const sortBy = (newSortType: string) => {
     const firstClick = newSortType !== sortType
     const secondClick = newSortType === sortType && !isReversed
@@ -107,7 +110,12 @@ export const AccountsTable = () => {
 
   return (
     <>
-      <AccountsForm setSearchQuery={setSearchQuery} />
+      <h1 className="text-2xl mb-[20px]">Accounts table</h1>
+
+      <TableFilter
+        setSearchQuery={setSearchQuery}
+        inputPlaceholder={inputPlaceholder}
+      />
 
       {visibleAccounts.length > 0
         ? <Table striped bordered hover>
@@ -141,10 +149,19 @@ export const AccountsTable = () => {
                 <td>{account.email}</td>
                 <td>{account.authToken}</td>
                 <td>{account.creationDate}</td>
+                <td className="cursor-pointer hover:scale-125 duration-300 ease-in-out">
+                  <Link
+                    to={`/profiles/${account.accountId}`}
+                    key={account.accountId}
+                    className="no-underline text-black"
+                  >
+                    Go to account №{account.accountId} profiles
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Table >
         : <p className="text-center">There are no accounts!</p>
       }
 
