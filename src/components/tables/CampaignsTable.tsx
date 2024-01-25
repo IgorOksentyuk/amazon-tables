@@ -1,20 +1,19 @@
 import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
-import { FaSort } from 'react-icons/fa'
-import { FaSortDown } from 'react-icons/fa'
-import { FaSortUp } from 'react-icons/fa'
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'
 
-import { accountsData } from '../../data/accountsData'
-import { accountTitles } from '../../constants/tableTitles'
-import { Account } from '../../interfaces/accountInterface'
+import { campaignsData } from '../../data/campaignsData'
+import { Campaign } from '../../interfaces/campaignsInterface'
+import { campaignTitles } from '../../constants/tableTitles'
 import { TableFilter } from '../TableFilter'
 import { Pagination } from '../Pagination'
-import { Link } from 'react-router-dom'
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 3
 
-const getVisibleAccounts = (
-  accounts: Account[],
+const getVisibleCampaigns = (
+  campaignsData: Campaign[],
+  profileId: string,
   searchQuery: string,
   sortType: string,
   isReversed: boolean,
@@ -23,27 +22,30 @@ const getVisibleAccounts = (
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
 
-  let visibleAccounts = [...accounts]
+  const filteredCampaigns = [...campaignsData]
+    .filter(campaign => campaign.profileId.toString() === profileId)
 
-  visibleAccounts = visibleAccounts.slice(startIndex, endIndex)
+  const totalPages = Math.ceil(filteredCampaigns.length / ITEMS_PER_PAGE)
+  let visibleCampaigns = filteredCampaigns.slice(startIndex, endIndex)
 
   if (searchQuery) {
     const normalizedQuery = searchQuery.toLowerCase().trim()
 
-    visibleAccounts = visibleAccounts.filter((account) =>
-      account.email.toLowerCase().includes(normalizedQuery)
+    visibleCampaigns = visibleCampaigns.filter(campaign =>
+      campaign.date.toLocaleLowerCase().includes(normalizedQuery)
     )
   }
 
   if (sortType) {
-    visibleAccounts.sort((a, b) => {
+    visibleCampaigns.sort((a, b) => {
       switch (sortType) {
-        case 'accountId':
+        case 'campaignId':
+        case 'clicks':
+        case 'cost':
+        case 'profileId':
           return (+a[sortType] - +b[sortType])
 
-        case 'email':
-        case 'authToken':
-        case 'creationDate':
+        case 'date':
           return a[sortType].localeCompare(b[sortType])
 
         default:
@@ -53,19 +55,22 @@ const getVisibleAccounts = (
   }
 
   if (isReversed) {
-    visibleAccounts.reverse()
+    visibleCampaigns.reverse()
   }
 
-  return visibleAccounts
+  return { visibleCampaigns, totalPages }
 }
 
-export const AccountsTable = () => {
+export const CampaignsTable = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortType, setSortType] = useState('')
   const [isReversed, setIsReversed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const inputPlaceholder = 'email'
+  const { accountId } = useParams()
+  const { profileId } = useParams()
+
+  const inputPlaceholder = 'date'
 
   const sortBy = (newSortType: string) => {
     const firstClick = newSortType !== sortType
@@ -94,15 +99,14 @@ export const AccountsTable = () => {
     }
   }
 
-  const visibleAccounts = getVisibleAccounts(
-    accountsData,
+  const { visibleCampaigns, totalPages } = getVisibleCampaigns(
+    campaignsData,
+    profileId || '',
     searchQuery,
     sortType,
     isReversed,
     currentPage,
   )
-
-  const totalPages = Math.ceil(accountsData.length / ITEMS_PER_PAGE)
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage)
@@ -110,18 +114,25 @@ export const AccountsTable = () => {
 
   return (
     <>
-      <h1 className="text-2xl mb-[20px]">Accounts table</h1>
+      <div className="flex justify-between">
+        <h2 className="text-2xl mb-[20px]">Campaigns of {profileId} profile</h2>
+
+        <Link to={`/profiles/${accountId}`} className="no-underline text-black font-bold
+        hover:scale-125 duration-300 ease-in-out">
+          Go to profiles
+        </Link>
+      </div>
 
       <TableFilter
         setSearchQuery={setSearchQuery}
         inputPlaceholder={inputPlaceholder}
       />
 
-      {visibleAccounts.length > 0
+      {visibleCampaigns.length > 0
         ? <Table striped bordered hover>
           <thead>
             <tr>
-              {accountTitles.map(title => (
+              {campaignTitles.map(title => (
                 <th
                   key={title}
                   onClick={() => sortBy(title)}
@@ -143,26 +154,18 @@ export const AccountsTable = () => {
           </thead>
 
           <tbody>
-            {visibleAccounts.map((account) => (
-              <tr key={account.accountId}>
-                <td>{account.accountId}</td>
-                <td>{account.email}</td>
-                <td>{account.authToken}</td>
-                <td>{account.creationDate}</td>
-                <td className="cursor-pointer hover:scale-125 duration-300 ease-in-out">
-                  <Link
-                    to={`/profiles/${account.accountId}`}
-                    key={account.accountId}
-                    className="no-underline text-black"
-                  >
-                    Go to account №{account.accountId} profiles
-                  </Link>
-                </td>
+            {visibleCampaigns.map((campaign) => (
+              <tr key={campaign.campaignId}>
+                <td>{campaign.campaignId}</td>
+                <td>{campaign.clicks}</td>
+                <td>{campaign.cost}</td>
+                <td>{campaign.date}</td>
+                <td>{campaign.profileId}</td>
               </tr>
             ))}
           </tbody>
-        </Table >
-        : <p className="text-center">There are no accounts!</p>
+        </Table>
+        : <p className="text-center">There are no campaigns!</p>
       }
 
       <Pagination
