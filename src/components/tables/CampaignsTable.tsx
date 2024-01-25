@@ -168,11 +168,12 @@ export const CampaignsTable = () => {
         : <p className="text-center">There are no campaigns!</p>
       }
 
-      <Pagination
-        pages={totalPages}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-      />
+      {visibleCampaigns.length > 0
+        && <Pagination
+          pages={totalPages}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+        />}
     </>
   )
 }

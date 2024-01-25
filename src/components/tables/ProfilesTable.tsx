@@ -181,11 +181,12 @@ export const ProfilesTable = () => {
         : <p className="text-center">There are no profiles!</p>
       }
 
-      <Pagination
-        pages={totalPages}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-      />
+      {visibleProfiles.length > 0
+        && <Pagination
+          pages={totalPages}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+        />}
     </>
   )
 }
