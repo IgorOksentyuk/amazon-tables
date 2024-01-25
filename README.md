@@ -1,30 +1,35 @@
-# React + TypeScript + Vite
+# Agency Amazon Tables Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+[DEMO](https://amazon-tables.vercel.app/)
+[repository](https://github.com/IgorOksentyuk/amazon-tables)
+[demo-video](https://drive.google.com/file/d/1aDUyxW9O42Jo_tP7Wt0nycDWE3tM7T3c/view?usp=sharing)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Description:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This project is a React application built using Vite and TypeScript, designed to manage and display data through three main tables: Accounts, Profile, and Campaigns. Each table offers functionality for filtering, sorting, and pagination, enhancing the user experience and facilitating efficient data management.
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Features:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+**Table Functionality:** Each table (Accounts, Profile, Campaigns) is equipped with filtering, sorting by all fields, and pagination features, ensuring ease of use and efficient data organization.
+
+**Routing:** Seamless routing is implemented between the tables, enabling smooth navigation and a cohesive user experience throughout the application.
+
+**Reusable Components:** Pagination and filtering components are designed to be reusable across all tables, promoting code efficiency and maintainability.
+
+---
+
+## Technologies Used:
+
+- Typescript;
+- React;
+- React Hooks (useState, useEffect, useRef);
+- React Router (useParams, useNavigate);
+- Bootstrap;
+- Tailwind CSS;
+- Vite.
