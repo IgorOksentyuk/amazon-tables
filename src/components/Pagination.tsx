@@ -7,7 +7,7 @@ type Props = {
   handlePageChange: (newpage: number) => void,
 }
 
-export const AccountsPagination: React.FC<Props> = ({
+export const Pagination: React.FC<Props> = ({
   pages,
   currentPage,
   handlePageChange,

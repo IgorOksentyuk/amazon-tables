@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AccountsTable } from './components/AccountsTable/AccountsTable'
-import { ProfilesTable } from './components/ProfilesTable/ProfilesTable'
+import { AccountsTable } from './components/tables/AccountsTable'
+import { ProfilesTable } from './components/tables/ProfilesTable'
 
 function App() {
   return (

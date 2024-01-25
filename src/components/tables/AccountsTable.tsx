@@ -7,9 +7,11 @@ import { FaSortUp } from 'react-icons/fa'
 import { accountsData } from '../../data/accountsData'
 import { accountTitles } from '../../constants/tableTitles'
 import { Account } from '../../interfaces/accountInterface'
-import { TableFilter } from '../TableFIlter'
-import { AccountsPagination } from './AccountsPagination'
+import { TableFilter } from '../TableFilter'
+import { Pagination } from '../Pagination'
 import { Link } from 'react-router-dom'
+
+const ITEMS_PER_PAGE = 5
 
 const getVisibleAccounts = (
   accounts: Account[],
@@ -18,7 +20,11 @@ const getVisibleAccounts = (
   isReversed: boolean,
   currentPage: number,
 ) => {
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
   let visibleAccounts = [...accounts]
+
+  visibleAccounts = visibleAccounts.slice(startIndex, endIndex)
 
   if (searchQuery) {
     const normalizedQuery = searchQuery.toLowerCase().trim()
@@ -49,15 +55,8 @@ const getVisibleAccounts = (
     visibleAccounts.reverse()
   }
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-
-  visibleAccounts = visibleAccounts.slice(startIndex, endIndex)
-
   return visibleAccounts
 }
-
-const ITEMS_PER_PAGE = 5
 
 export const AccountsTable = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -165,7 +164,7 @@ export const AccountsTable = () => {
         : <p className="text-center">There are no accounts!</p>
       }
 
-      <AccountsPagination
+      <Pagination
         pages={totalPages}
         currentPage={currentPage}
         handlePageChange={handlePageChange}
