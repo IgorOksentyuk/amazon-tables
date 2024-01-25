@@ -3,7 +3,6 @@
 ---
 
 - [DEMO](https://amazon-tables.vercel.app/)
-- [repository](https://github.com/IgorOksentyuk/amazon-tables)
 - [demo-video](https://drive.google.com/file/d/1aDUyxW9O42Jo_tP7Wt0nycDWE3tM7T3c/view?usp=sharing)
 
 ---
