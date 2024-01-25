@@ -169,7 +169,7 @@ export const ProfilesTable = () => {
                   <Link
                     to={`/profiles/${accountId}/campaigns/${profile.profileId}`}
                     key={profile.profileId}
-                    className="no-underline text-black"
+                    className="no-underline text-blue-500"
                   >
                     Go to profile №{profile.profileId} campaigns
                   </Link>

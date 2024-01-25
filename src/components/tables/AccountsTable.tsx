@@ -153,7 +153,7 @@ export const AccountsTable = () => {
                   <Link
                     to={`/profiles/${account.accountId}`}
                     key={account.accountId}
-                    className="no-underline text-black"
+                    className="no-underline text-blue-500"
                   >
                     Go to account №{account.accountId} profiles
                   </Link>
@@ -165,11 +165,12 @@ export const AccountsTable = () => {
         : <p className="text-center">There are no accounts!</p>
       }
 
-      <Pagination
-        pages={totalPages}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-      />
+      {visibleAccounts.length > 0
+        && <Pagination
+          pages={totalPages}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+        />}
     </>
   )
 }
